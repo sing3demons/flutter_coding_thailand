@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_coding_thailand/routes/routes.dart';
 
 class Menu {
   final String title;
   final IconData icon;
   final Color iconColor;
+  final double size;
+  final Color color;
+
   final Function(BuildContext context) onTap;
 
-  const Menu({this.title, this.icon, this.iconColor, this.onTap});
+  const Menu(
+      {this.title,
+      this.icon,
+      this.iconColor,
+      this.size,
+      this.color,
+      this.onTap});
 }
 
 class MenuViewModel {
@@ -18,26 +28,42 @@ class MenuViewModel {
         Menu(
           title: 'Company',
           icon: Icons.business,
+          size: _sizeIcon,
+          color: _color,
           iconColor: _colorIcon,
           onTap: (context) {},
         ),
         Menu(
           title: 'Map',
           icon: Icons.map,
+          size: _sizeIcon,
+          color: _color,
           iconColor: _colorIcon,
           onTap: (context) {},
         ),
         Menu(
           title: 'Camera',
           icon: Icons.camera,
+          size: _sizeIcon,
+          color: _color,
           iconColor: _colorIcon,
           onTap: (context) {},
         ),
         Menu(
           title: 'About',
           icon: Icons.people,
+          size: _sizeIcon,
+          color: _color,
           iconColor: _colorIcon,
-          onTap: (context) {},
+          onTap: (context) async {
+            var result =
+                await Navigator.pushNamed(context, Routes.about, arguments: {
+              'email': 'sing3demons@livew.com',
+            });
+            ScaffoldMessenger.of(context)
+              ..removeCurrentSnackBar()
+              ..showSnackBar(SnackBar(content: Text('$result')));
+          },
         ),
       ];
 }

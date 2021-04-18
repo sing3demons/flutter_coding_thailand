@@ -52,6 +52,18 @@ class _MenuState extends State<Menu> {
               },
             ),
             ListTile(
+              selected: ModalRoute.of(context).settings.name == Routes.login
+                  ? true
+                  : false,
+              onTap: () {
+                Navigator.of(context, rootNavigator: true)
+                    .pushNamedAndRemoveUntil(
+                        Routes.usersStack, (route) => false);
+              },
+              leading: FaIcon(FontAwesomeIcons.signInAlt),
+              title: Text('login'),
+            ),
+            ListTile(
               leading: Icon(Icons.settings),
               title: Text('Setting'),
             ),

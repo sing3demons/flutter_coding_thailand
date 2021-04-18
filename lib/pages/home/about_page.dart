@@ -10,7 +10,7 @@ class AboutPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('เกี่ยวกับเรา'),
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: true ,
       ),
       body: Center(
         child: Column(

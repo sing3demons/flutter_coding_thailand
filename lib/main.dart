@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_coding_thailand/routes/product_stack.dart';
 import 'package:flutter_coding_thailand/routes/home_stack.dart';
 import 'package:flutter_coding_thailand/routes/routes.dart';
+import 'package:flutter_coding_thailand/routes/users_stack.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,11 +12,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // home: HomePage(),
+      // home: LoginPage(),
       initialRoute: '/',
       routes: {
         Routes.root: (BuildContext context) => HomeStack(),
         Routes.productstack: (context) => ProductStack(),
+        Routes.usersStack: (context) => UsersStack(),
       },
     );
   }

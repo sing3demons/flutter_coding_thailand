@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_coding_thailand/pages/about_page.dart';
-import 'package:flutter_coding_thailand/pages/contact_page.dart';
-import 'package:flutter_coding_thailand/pages/detail_page.dart';
-import 'package:flutter_coding_thailand/pages/home_page.dart';
-import 'package:flutter_coding_thailand/pages/product_page.dart';
+import 'package:flutter_coding_thailand/pages/home/about_page.dart';
+import 'package:flutter_coding_thailand/pages/home/contact_page.dart';
+import 'package:flutter_coding_thailand/pages/login/login_page.dart';
+import 'package:flutter_coding_thailand/pages/product/detail_page.dart';
+import 'package:flutter_coding_thailand/pages/home/home_page.dart';
+import 'package:flutter_coding_thailand/pages/product/product_page.dart';
 
 class Routes {
   static const root = '/';
@@ -16,12 +17,17 @@ class Routes {
   static const detail = 'productstack/detail';
   static const products = 'productstack/products';
 
+  //Login
+  static const usersStack = '/users';
+  static const login = 'users/login';
+
   static final Map<String, WidgetBuilder> _route = {
     home: (BuildContext context) => HomePage(),
     contact: (contact) => ContactPage(),
     about: (context) => AboutPage(),
     detail: (context) => DetailPage(),
     products: (context) => ProductPage(),
+    login: (context) => LoginPage(),
   };
   static Map<String, WidgetBuilder> getPage() => _route;
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_coding_thailand/pages/about_page.dart';
-import 'package:flutter_coding_thailand/pages/contact_page.dart';
-import 'package:flutter_coding_thailand/pages/home_page.dart';
+import 'package:flutter_coding_thailand/pages/home/about_page.dart';
+import 'package:flutter_coding_thailand/pages/home/contact_page.dart';
+import 'package:flutter_coding_thailand/pages/home/home_page.dart';
 import 'package:flutter_coding_thailand/routes/routes.dart';
 
 class HomeStack extends StatefulWidget {

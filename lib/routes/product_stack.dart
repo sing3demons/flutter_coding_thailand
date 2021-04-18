@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_coding_thailand/pages/detail_page.dart';
-import 'package:flutter_coding_thailand/pages/product_page.dart';
+import 'package:flutter_coding_thailand/pages/product/detail_page.dart';
+import 'package:flutter_coding_thailand/pages/product/product_page.dart';
 import 'package:flutter_coding_thailand/routes/routes.dart';
 
 class ProductStack extends StatefulWidget {
