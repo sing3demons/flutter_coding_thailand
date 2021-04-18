@@ -15,14 +15,15 @@ class _MenuState extends State<Menu> {
     return Container(
       width: MediaQuery.of(context).size.width * 0.8,
       child: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
+        child: Column(
           children: [
-            DrawerHeader(
-              child: Text('Drawer Header'),
-              decoration: BoxDecoration(
-                color: Colors.blue,
+            UserAccountsDrawerHeader(
+              currentAccountPicture: CircleAvatar(
+                backgroundImage: NetworkImage(
+                    'https://cdn-images-1.medium.com/max/280/1*X5PBTDQQ2Csztg3a6wofIQ@2x.png'),
               ),
+              accountName: Text('KPsing'),
+              accountEmail: Text('sing@dev.com'),
             ),
             ListTile(
               selected: ModalRoute.of(context).settings.name == Routes.home
@@ -53,6 +54,11 @@ class _MenuState extends State<Menu> {
             ListTile(
               leading: Icon(Icons.settings),
               title: Text('Setting'),
+            ),
+            Spacer(),
+            ListTile(
+              leading: FaIcon(FontAwesomeIcons.signOutAlt),
+              title: Text('logout'),
             ),
           ],
         ),
