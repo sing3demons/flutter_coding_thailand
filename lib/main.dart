@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_coding_thailand/routes/product_stack.dart';
+import 'package:flutter_coding_thailand/routes/home_stack.dart';
 import 'package:flutter_coding_thailand/routes/routes.dart';
 
 void main() => runApp(MyApp());
@@ -11,7 +13,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       // home: HomePage(),
       initialRoute: '/',
-      routes: Routes.getPage(),
+      routes: {
+        Routes.root: (BuildContext context) => HomeStack(),
+        Routes.productstack: (context) => ProductStack(),
+      },
     );
   }
 }

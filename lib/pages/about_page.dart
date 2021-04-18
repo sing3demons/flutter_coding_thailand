@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_coding_thailand/routes/routes.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({Key key}) : super(key: key);
@@ -25,7 +26,7 @@ class AboutPage extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/contact');
+                Navigator.pushNamed(context, Routes.contact);
               },
               child: Text('contact'),
             ),

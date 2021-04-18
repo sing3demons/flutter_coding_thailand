@@ -25,22 +25,34 @@ class _MenuState extends State<Menu> {
               ),
             ),
             ListTile(
+              selected: ModalRoute.of(context).settings.name == Routes.home
+                  ? true
+                  : false,
               leading: FaIcon(FontAwesomeIcons.home),
               title: Text('Home'),
               onTap: () {
-                Navigator.pushNamedAndRemoveUntil(
-                    context, Routes.home, (route) => false);
+                Navigator.of(context, rootNavigator: true)
+                    .pushNamedAndRemoveUntil(Routes.root, (route) => false);
               },
             ),
             ListTile(
+              selected: ModalRoute.of(context).settings.name == Routes.products
+                  ? true
+                  : false,
               leading: FaIcon(
                 FontAwesomeIcons.cartArrowDown,
                 color: Colors.grey,
               ),
               title: Text('products'),
               onTap: () {
-                Navigator.pushNamed(context, Routes.products);
+                Navigator.of(context, rootNavigator: true)
+                    .pushNamedAndRemoveUntil(
+                        Routes.productstack, (route) => false);
               },
+            ),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text('Setting'),
             ),
           ],
         ),

@@ -6,11 +6,15 @@ import 'package:flutter_coding_thailand/pages/home_page.dart';
 import 'package:flutter_coding_thailand/pages/product_page.dart';
 
 class Routes {
-  static const home = '/';
-  static const contact = '/contact';
-  static const about = '/about';
-  static const detail = '/detail';
-  static const products = '/products';
+  static const root = '/';
+  static const home = 'homestack/home';
+  static const contact = 'homestack/contact';
+  static const about = 'homestack/about';
+
+  //Products
+  static const productstack = '/productstack';
+  static const detail = 'productstack/detail';
+  static const products = 'productstack/products';
 
   static final Map<String, WidgetBuilder> _route = {
     home: (BuildContext context) => HomePage(),
