@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_coding_thailand/pages/home/about_page.dart';
+import 'package:flutter_coding_thailand/pages/home/company_page.dart';
 import 'package:flutter_coding_thailand/pages/home/contact_page.dart';
 import 'package:flutter_coding_thailand/pages/login/login_page.dart';
 import 'package:flutter_coding_thailand/pages/product/detail_page.dart';
@@ -11,6 +12,7 @@ class Routes {
   static const home = 'homestack/home';
   static const contact = 'homestack/contact';
   static const about = 'homestack/about';
+  static const company = 'homestack/company';
 
   //Products
   static const productstack = '/productstack';
@@ -28,6 +30,7 @@ class Routes {
     detail: (context) => DetailPage(),
     products: (context) => ProductPage(),
     login: (context) => LoginPage(),
+    company: (context) => CompanyPage(),
   };
   static Map<String, WidgetBuilder> getPage() => _route;
 }

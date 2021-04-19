@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_coding_thailand/pages/home/about_page.dart';
+import 'package:flutter_coding_thailand/pages/home/company_page.dart';
 import 'package:flutter_coding_thailand/pages/home/contact_page.dart';
 import 'package:flutter_coding_thailand/pages/home/home_page.dart';
 import 'package:flutter_coding_thailand/routes/routes.dart';
@@ -27,6 +28,9 @@ class _HomeStackState extends State<HomeStack> {
             break;
           case Routes.contact:
             builder = (BuildContext _) => ContactPage();
+            break;
+          case Routes.company:
+            builder = (BuildContext _) => CompanyPage();
             break;
           default:
             throw Exception('Invalid route: ${settings.name}');

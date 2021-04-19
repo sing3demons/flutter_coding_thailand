@@ -31,7 +31,9 @@ class MenuViewModel {
           size: _sizeIcon,
           color: _color,
           iconColor: _colorIcon,
-          onTap: (context) {},
+          onTap: (context)  {
+            Navigator.pushNamed(context, Routes.company);
+          },
         ),
         Menu(
           title: 'Map',

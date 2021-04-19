@@ -15,7 +15,7 @@ class _MenuState extends State<Menu> {
     return Container(
       width: MediaQuery.of(context).size.width * 0.8,
       child: Drawer(
-        child: Column(
+        child: ListView(
           children: [
             UserAccountsDrawerHeader(
               currentAccountPicture: CircleAvatar(
@@ -25,52 +25,55 @@ class _MenuState extends State<Menu> {
               accountName: Text('KPsing'),
               accountEmail: Text('sing@dev.com'),
             ),
-            ListTile(
-              selected: ModalRoute.of(context).settings.name == Routes.home
-                  ? true
-                  : false,
-              leading: FaIcon(FontAwesomeIcons.home),
-              title: Text('Home'),
-              onTap: () {
-                Navigator.of(context, rootNavigator: true)
-                    .pushNamedAndRemoveUntil(Routes.root, (route) => false);
-              },
-            ),
-            ListTile(
-              selected: ModalRoute.of(context).settings.name == Routes.products
-                  ? true
-                  : false,
-              leading: FaIcon(
-                FontAwesomeIcons.cartArrowDown,
-                color: Colors.grey,
-              ),
-              title: Text('products'),
-              onTap: () {
-                Navigator.of(context, rootNavigator: true)
-                    .pushNamedAndRemoveUntil(
-                        Routes.productstack, (route) => false);
-              },
-            ),
-            ListTile(
-              selected: ModalRoute.of(context).settings.name == Routes.login
-                  ? true
-                  : false,
-              onTap: () {
-                Navigator.of(context, rootNavigator: true)
-                    .pushNamedAndRemoveUntil(
-                        Routes.usersStack, (route) => false);
-              },
-              leading: FaIcon(FontAwesomeIcons.signInAlt),
-              title: Text('login'),
-            ),
-            ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Setting'),
-            ),
-            Spacer(),
-            ListTile(
-              leading: FaIcon(FontAwesomeIcons.signOutAlt),
-              title: Text('logout'),
+            Column(
+              children: [
+                ListTile(
+                  selected: ModalRoute.of(context).settings.name == Routes.home
+                      ? true
+                      : false,
+                  leading: FaIcon(FontAwesomeIcons.home),
+                  title: Text('Home'),
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true)
+                        .pushNamedAndRemoveUntil(Routes.root, (route) => false);
+                  },
+                ),
+                ListTile(
+                  selected:
+                      ModalRoute.of(context).settings.name == Routes.products
+                          ? true
+                          : false,
+                  leading: FaIcon(
+                    FontAwesomeIcons.cartArrowDown,
+                    color: Colors.grey,
+                  ),
+                  title: Text('products'),
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true)
+                        .pushNamedAndRemoveUntil(
+                            Routes.productstack, (route) => false);
+                  },
+                ),
+                ListTile(
+                  selected: ModalRoute.of(context).settings.name == Routes.login
+                      ? true
+                      : false,
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true)
+                        .pushNamedAndRemoveUntil(
+                            Routes.usersStack, (route) => false);
+                  },
+                  leading: FaIcon(FontAwesomeIcons.signInAlt),
+                  title: Text('login'),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.45,
+                ),
+                ListTile(
+                  leading: FaIcon(FontAwesomeIcons.signOutAlt),
+                  title: Text('logout'),
+                ),
+              ],
             ),
           ],
         ),
