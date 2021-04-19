@@ -13,15 +13,15 @@ class CovidPage extends StatefulWidget {
 class _CovidPageState extends State<CovidPage> {
   Map<String, dynamic> data;
   _getApi() async {
-    var url = Uri.parse('https://covid19.th-stat.com/api/open/today');
+    Uri url = Uri.parse('https://covid19.th-stat.com/api/open/today');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       var json = convert.jsonDecode(response.body);
       setState(() {
-        data = json['Confirmed'];
+        data = json;
       });
 
-      print(data);
+      print(data['Confirmed']);
     }
   }
 
@@ -55,11 +55,13 @@ class _CovidPageState extends State<CovidPage> {
             GestureDetector(
               child: Container(
                 color: Colors.pink,
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(10),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'ติดเชื้อสะสม : ${data.toString()}',
+                      'ติดเชื้อสะสม : ${data['Confirmed']}',
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
@@ -74,9 +76,11 @@ class _CovidPageState extends State<CovidPage> {
                 color: Colors.pink,
                 padding: const EdgeInsets.all(8),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'ติดเชื้อวันนี้',
+                      'ติดเชื้อวันนี้ : ${data['NewConfirmed']}',
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
