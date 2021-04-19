@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_coding_thailand/pages/home/about_page.dart';
 import 'package:flutter_coding_thailand/pages/home/company_page.dart';
 import 'package:flutter_coding_thailand/pages/home/contact_page.dart';
+import 'package:flutter_coding_thailand/pages/home/covid_data.dart';
 import 'package:flutter_coding_thailand/pages/users/login_page.dart';
 import 'package:flutter_coding_thailand/pages/product/detail_page.dart';
 import 'package:flutter_coding_thailand/pages/home/home_page.dart';
@@ -13,6 +14,7 @@ class Routes {
   static const contact = 'homestack/contact';
   static const about = 'homestack/about';
   static const company = 'homestack/company';
+  static const covid = 'homestack/covid';
 
   //Products
   static const productstack = '/productstack';
@@ -27,6 +29,7 @@ class Routes {
     home: (BuildContext context) => HomePage(),
     contact: (contact) => ContactPage(),
     about: (context) => AboutPage(),
+    covid: (context) => CovidPage(),
     detail: (context) => DetailPage(),
     products: (context) => ProductPage(),
     login: (context) => LoginPage(),

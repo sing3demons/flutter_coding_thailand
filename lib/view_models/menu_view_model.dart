@@ -31,7 +31,7 @@ class MenuViewModel {
           size: _sizeIcon,
           color: _color,
           iconColor: _colorIcon,
-          onTap: (context)  {
+          onTap: (context) {
             Navigator.pushNamed(context, Routes.company);
           },
         ),
@@ -50,6 +50,16 @@ class MenuViewModel {
           color: _color,
           iconColor: _colorIcon,
           onTap: (context) {},
+        ),
+        Menu(
+          title: 'Covid',
+          icon: Icons.hotel,
+          size: _sizeIcon,
+          color: _color,
+          iconColor: _colorIcon,
+          onTap: (context) {
+            Navigator.pushNamed(context, Routes.covid);
+          },
         ),
         Menu(
           title: 'About',
