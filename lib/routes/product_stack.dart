@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_coding_thailand/pages/product/detail_page.dart';
+import 'package:flutter_coding_thailand/pages/product/detail_page_v2.dart';
 import 'package:flutter_coding_thailand/pages/product/product_page.dart';
+import 'package:flutter_coding_thailand/pages/product/product_page_v2.dart';
 import 'package:flutter_coding_thailand/routes/routes.dart';
 
 class ProductStack extends StatefulWidget {
@@ -17,10 +19,10 @@ class _ProductStackState extends State<ProductStack> {
         WidgetBuilder builder;
         switch (settings.name) {
           case Routes.products:
-            builder = (BuildContext _) => ProductPage();
+            builder = (BuildContext _) => ProductPageV2();
             break;
           case Routes.detail:
-            builder = (BuildContext _) => DetailPage();
+            builder = (BuildContext _) => DetailPageV2();
             break;
           default:
             throw Exception('Invalid route: ${settings.name}');

@@ -1,45 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_coding_thailand/models/datail.dart';
-import 'package:intl/intl.dart';
-import 'dart:convert' as convert;
+import 'package:flutter_coding_thailand/models/product.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
 
-class DetailPage extends StatefulWidget {
-  DetailPage({Key key}) : super(key: key);
+import 'package:intl/intl.dart';
 
+class DetailPageV2 extends StatefulWidget {
   @override
-  _DetailPageState createState() => _DetailPageState();
+  _DetailPageV2State createState() => _DetailPageV2State();
 }
 
-class _DetailPageState extends State<DetailPage> {
+class _DetailPageV2State extends State<DetailPageV2> {
   Map<String, dynamic> course;
-  List<Charpter> charpter = [];
+  List<dynamic> charpter;
   bool isLoading = true;
-  NumberFormat numberFormat = new NumberFormat('#,###');
 
-  _fatchData(int id) async {
+  var fNumber = NumberFormat('#,###');
+
+  void _fetchData(int id) async {
     Uri url = Uri.parse('https://api.codingthailand.com/api/course/$id');
     var response = await http.get(url);
+
     if (response.statusCode == 200) {
-      var json = convert.jsonDecode(response.body);
-      Detail detail = new Detail.fromJson(json);
-      // print(json);
+      Map<String, dynamic> detail = convert.jsonDecode(response.body);
       setState(() {
-        charpter = detail.charpter;
+        charpter = detail['data'];
         isLoading = false;
       });
-    } else {
-      print(response.statusCode);
     }
   }
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(
-      Duration.zero,
-      () => _fatchData(course['id']),
-    );
+    Future.delayed(Duration.zero, () {
+      _fetchData(course['id']);
+    });
   }
 
   @override
@@ -48,7 +44,6 @@ class _DetailPageState extends State<DetailPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('${course['title']}'),
-        automaticallyImplyLeading: true,
       ),
       body: isLoading == true
           ? Center(
@@ -56,11 +51,11 @@ class _DetailPageState extends State<DetailPage> {
             )
           : ListView.separated(
               itemBuilder: (context, index) => ListTile(
-                    title: Text('${charpter[index].chTitle}'),
-                    subtitle: Text('${charpter[index].chDateadd}'),
+                    title: Text('${charpter[index]['ch_title']}'),
+                    subtitle: Text('${charpter[index]['ch_dateadd']}'),
                     trailing: Chip(
-                      label: Text(
-                          ' ${numberFormat.format(charpter[index].chView)}'),
+                      label:
+                          Text('${fNumber.format(charpter[index]['ch_view'])}'),
                     ),
                   ),
               separatorBuilder: (context, index) => Divider(),
