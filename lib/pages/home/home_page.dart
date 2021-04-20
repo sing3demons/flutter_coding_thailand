@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_coding_thailand/view_models/menu_view_model.dart';
 import 'package:flutter_coding_thailand/widgets/menu.dart' as mainMenu;
 
+
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
 
@@ -38,27 +39,29 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  List<GestureDetector> _buildMainMenu() => MenuViewModel()
+  List<InkWell> _buildMainMenu() => MenuViewModel()
       .items
       .map(
-        (item) => GestureDetector(
+        (item) => InkWell(
           onTap: () => item.onTap(context),
-          child: Container(
-            padding: const EdgeInsets.all(8),
-            child: Column(
-              children: [
-                Icon(
-                  item.icon,
-                  size: item.size,
-                  color: item.iconColor,
-                ),
-                Text(
-                  item.title,
-                  style: TextStyle(fontSize: 20),
-                ),
-              ],
+          child: GestureDetector(
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              child: Column(
+                children: [
+                  Icon(
+                    item.icon,
+                    size: item.size,
+                    color: item.iconColor,
+                  ),
+                  Text(
+                    item.title,
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ],
+              ),
+              color: item.color,
             ),
-            color: item.color,
           ),
         ),
       )

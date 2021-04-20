@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_coding_thailand/pages/home/news_page.dart';
-import 'package:flutter_coding_thailand/pages/home/web_view_page.dart';
+import 'package:flutter_coding_thailand/pages/news/news_page.dart';
+import 'package:flutter_coding_thailand/pages/news/web_view_page.dart';
 import 'package:flutter_coding_thailand/routes/routes.dart';
 
 class NewsStack extends StatefulWidget {

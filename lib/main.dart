@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_coding_thailand/routes/news_stack.dart';
-import 'package:flutter_coding_thailand/routes/product_stack.dart';
-import 'package:flutter_coding_thailand/routes/home_stack.dart';
+import 'package:flutter_coding_thailand/pages/news/news_stack.dart';
+import 'package:flutter_coding_thailand/pages/product/stack/product_stack.dart';
+import 'package:flutter_coding_thailand/pages/home/stack/home_stack.dart';
 import 'package:flutter_coding_thailand/routes/routes.dart';
-import 'package:flutter_coding_thailand/routes/users_stack.dart';
+import 'package:flutter_coding_thailand/pages/users/stack/users_stack.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,15 +12,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      // home: LoginPage(),
-      initialRoute: '/',
-      routes: {
-        Routes.root: (BuildContext context) => HomeStack(),
-        Routes.productstack: (context) => ProductStack(),
-        Routes.usersStack: (context) => UsersStack(),
-        Routes.newsstack:(context)=> NewsStack(),
-      },
-    );
+    return MaterialApp(initialRoute: '/', routes: {
+      Routes.root: (BuildContext context) => HomeStack(),
+      Routes.productstack: (context) => ProductStack(),
+      Routes.usersStack: (context) => UsersStack(),
+      Routes.newsstack: (context) => NewsStack(),
+    });
   }
 }
