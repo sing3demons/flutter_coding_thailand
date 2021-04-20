@@ -28,21 +28,8 @@ class _RoomPageV2State extends State<RoomPageV2> {
     }
   }
 
-  //  _fatch() async {
-  //   Uri url = Uri.parse('https://codingthailand.com/api/get_rooms.php');
-  //   final response = await get(url);
-  //   if (response.statusCode == 200) {
-  //     List<dynamic> json = jsonDecode(response.body);
-  //     setState(() {
-  //       isLoading = false;
-  //       room = json;
-  //     });
-  //   }
-  // }
-
   @override
   void initState() {
-    // _fatch();
     futureData = fetchData();
     super.initState();
   }
@@ -72,30 +59,10 @@ class _RoomPageV2State extends State<RoomPageV2> {
             } else if (snapshot.hasError) {
               return Text("${snapshot.error}");
             }
-
-            // By default, show a loading spinner.
             return CircularProgressIndicator();
           },
         ),
       ),
     );
   }
-
-  // body: isLoading == true ? Center(
-  //         child: CircularProgressIndicator(),
-  //       )
-  //     : _buildListView(),
-
-  // ListView _buildListView() {
-  //   return ListView.separated(
-  //       itemBuilder: (context, index) => ListTile(
-  //             title: Text('${room[index]['name']}'),
-  //             subtitle: Text('${room[index]['status']}'),
-  //             trailing: Chip(
-  //               label: Text('${room[index]['id']}'),
-  //             ),
-  //           ),
-  //       separatorBuilder: (context, index) => Divider(),
-  //       itemCount: room.length);
-  // }
 }

@@ -55,6 +55,16 @@ class _MenuState extends State<Menu> {
                   },
                 ),
                 ListTile(
+                  selected: ModalRoute.of(context).settings.name == Routes.news,
+                  title: Text('News'),
+                  leading: Icon(Icons.new_releases_sharp),
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true)
+                        .pushNamedAndRemoveUntil(
+                            Routes.newsstack, (route) => false);
+                  },
+                ),
+                ListTile(
                   selected: ModalRoute.of(context).settings.name == Routes.login
                       ? true
                       : false,

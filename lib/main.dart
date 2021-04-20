@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_coding_thailand/routes/news_stack.dart';
 import 'package:flutter_coding_thailand/routes/product_stack.dart';
 import 'package:flutter_coding_thailand/routes/home_stack.dart';
 import 'package:flutter_coding_thailand/routes/routes.dart';
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
         Routes.root: (BuildContext context) => HomeStack(),
         Routes.productstack: (context) => ProductStack(),
         Routes.usersStack: (context) => UsersStack(),
+        Routes.newsstack:(context)=> NewsStack(),
       },
     );
   }

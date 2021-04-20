@@ -18,6 +18,10 @@ class Routes {
   static const covid = 'homestack/covid';
   static const room = 'homestack/room';
 
+  static const newsstack = '/newsstack';
+  static const news = 'newsstack/news';
+  static const webview = 'newsstack/webview';
+
   //Products
   static const productstack = '/productstack';
   static const detail = 'productstack/detail';
