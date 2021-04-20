@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_coding_thailand/pages/news/news_stack.dart';
+import 'package:flutter_coding_thailand/pages/news/stack/news_stack.dart';
 import 'package:flutter_coding_thailand/pages/product/stack/product_stack.dart';
 import 'package:flutter_coding_thailand/pages/home/stack/home_stack.dart';
 import 'package:flutter_coding_thailand/routes/routes.dart';

@@ -20,37 +20,61 @@ class _NewsPageState extends State<NewsPage> {
   int totalResults = 0;
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
+  var page = 1;
+  var pageSize = 12;
 
   void _onRefresh() async {
     await Future.delayed(Duration(milliseconds: 1000));
+    setState(() {
+      articles.clear();
+      page = 1;
+    });
+    _fetchArticle();
     _refreshController.refreshCompleted();
   }
 
   void _onLoading() async {
-    if (mounted) setState(() {});
-    _refreshController.loadComplete();
+    await Future.delayed(Duration(milliseconds: 1000));
+    if (page < (totalResults / pageSize).ceil()) {
+      if (mounted)
+        setState(() {
+          page = ++page;
+        });
+      _fetchArticle();
+    } else {
+      _refreshController.loadNoData();
+      _refreshController.resetNoData();
+    }
+
+    // _refreshController.loadComplete();
   }
 
-  fetchArticle() async {
-    var apiKey = '15af886eb2504a9cbab0a7431481c331';
-    Uri url = Uri.parse(
-        'https://newsapi.org/v2/top-headlines?country=th&apiKey=$apiKey');
-    final response = await get(url);
+  _fetchArticle() async {
+    try {
+      String apiKey = '15af886eb2504a9cbab0a7431481c331';
+      Uri url = Uri.parse(
+          'https://newsapi.org/v2/top-headlines?country=th&apiKey=$apiKey&page=$page&pageSize=$pageSize');
+      final response = await get(url);
 
-    if (response.statusCode == 200) {
-      Map<String, dynamic> json = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        Map<String, dynamic> json = jsonDecode(response.body);
 
-      setState(() {
-        articles = json['articles'];
-        totalResults = json['totalResults'];
-        isLoading = false;
-      });
+        setState(() {
+          articles.addAll(json['articles']);
+          totalResults = json['totalResults'];
+          isLoading = false;
+        });
+      } else {
+        throw Exception("Failed to load article");
+      }
+    } catch (e) {
+      print(e);
     }
   }
 
   @override
   void initState() {
-    fetchArticle();
+    _fetchArticle();
     super.initState();
   }
 
@@ -64,6 +88,29 @@ class _NewsPageState extends State<NewsPage> {
       body: SmartRefresher(
         enablePullDown: true,
         enablePullUp: true,
+        header: MaterialClassicHeader(
+          backgroundColor: Colors.amber,
+        ),
+        footer: CustomFooter(
+          builder: (BuildContext context, LoadStatus mode) {
+            Widget body;
+            if (mode == LoadStatus.idle) {
+              body = Text("pull up load");
+            } else if (mode == LoadStatus.loading) {
+              body = CupertinoActivityIndicator();
+            } else if (mode == LoadStatus.failed) {
+              body = Text("Load Failed!Click retry!");
+            } else if (mode == LoadStatus.canLoading) {
+              body = Text("release to load more");
+            } else if (mode == LoadStatus.noMore) {
+              body = Text("No more Data");
+            }
+            return Container(
+              height: 55.0,
+              child: Center(child: body),
+            );
+          },
+        ),
         controller: _refreshController,
         onRefresh: _onRefresh,
         onLoading: _onLoading,
