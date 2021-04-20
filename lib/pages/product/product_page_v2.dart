@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_coding_thailand/models/product.dart';
 import 'package:flutter_coding_thailand/routes/routes.dart';
 import 'package:flutter_coding_thailand/widgets/menu.dart' as mainMenu;
 import 'dart:convert' as convert;
@@ -13,7 +12,7 @@ class ProductPageV2 extends StatefulWidget {
 }
 
 class _ProductPageV2State extends State<ProductPageV2> {
-  List<dynamic> course;
+  List<dynamic> course = [];
   bool isLoading = true;
 
   void _fetchData() async {

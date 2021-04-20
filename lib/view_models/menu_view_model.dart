@@ -62,6 +62,16 @@ class MenuViewModel {
           },
         ),
         Menu(
+          title: 'Room',
+          icon: Icons.person,
+          size: _sizeIcon,
+          color: _color,
+          iconColor: _colorIcon,
+          onTap: (context) {
+            Navigator.pushNamed(context, Routes.room);
+          },
+        ),
+        Menu(
           title: 'About',
           icon: Icons.people,
           size: _sizeIcon,

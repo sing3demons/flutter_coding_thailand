@@ -11,20 +11,24 @@ class ContactPage extends StatelessWidget {
         title: Text('ติดต่อเรา'),
         // automaticallyImplyLeading: false,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Contact Page'),
-            TextButton(
-              onPressed: () {
-                Navigator.pushNamedAndRemoveUntil(
-                    context, Routes.home, (route) => false);
-              },
-              child: Text('go to home'),
-            ),
-          ],
-        ),
+      body: _buildCenter(context),
+    );
+  }
+
+  Center _buildCenter(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('Contact Page'),
+          TextButton(
+            onPressed: () {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, Routes.home, (route) => false);
+            },
+            child: Text('go to home'),
+          ),
+        ],
       ),
     );
   }

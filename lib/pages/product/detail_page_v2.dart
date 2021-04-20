@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_coding_thailand/models/product.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
@@ -32,10 +31,10 @@ class _DetailPageV2State extends State<DetailPageV2> {
 
   @override
   void initState() {
-    super.initState();
     Future.delayed(Duration.zero, () {
       _fetchData(course['id']);
     });
+    super.initState();
   }
 
   @override

@@ -4,6 +4,7 @@ import 'package:flutter_coding_thailand/pages/home/company_page.dart';
 import 'package:flutter_coding_thailand/pages/home/contact_page.dart';
 import 'package:flutter_coding_thailand/pages/home/covid_data.dart';
 import 'package:flutter_coding_thailand/pages/home/home_page.dart';
+import 'package:flutter_coding_thailand/pages/home/room_page_v2.dart';
 import 'package:flutter_coding_thailand/routes/routes.dart';
 
 class HomeStack extends StatefulWidget {
@@ -35,6 +36,9 @@ class _HomeStackState extends State<HomeStack> {
             break;
           case Routes.covid:
             builder = (BuildContext _) => CovidPage();
+            break;
+          case Routes.room:
+            builder = (BuildContext _) => RoomPageV2();
             break;
           default:
             throw Exception('Invalid route: ${settings.name}');
