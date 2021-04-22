@@ -1,7 +1,10 @@
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_coding_thailand/routes/routes.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:another_flushbar/flushbar.dart';
+import 'package:http/http.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -13,6 +16,69 @@ class _LoginFormState extends State<LoginForm> {
   TextEditingController passwordController;
   String _errorEmail;
   bool emailIsValid = false;
+  Map<String, dynamic> _formKey = {};
+  SharedPreferences prefs;
+
+  _initPref() async {
+    prefs = await SharedPreferences.getInstance();
+  }
+
+  _login(Map<String, dynamic> value) async {
+    Uri url = Uri.parse('https://api.codingthailand.com/api/login');
+    var response = await post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(value),
+    );
+
+    Future<void> _getProfile() async {
+      var tokenString = await prefs.getString('token');
+      var token = jsonDecode(tokenString);
+
+      var response = await get(
+          Uri.parse('https://api.codingthailand.com/api/profile'),
+          headers: {'Authorization': "Bearer ${token['access_token']}"});
+
+      var data = jsonDecode(response.body);
+      var profile = data['data']['user'];
+
+      prefs.setString('profile', jsonEncode(profile));
+    }
+
+    if (response.statusCode == 200) {
+      await prefs.setString('token', response.body);
+
+      _getProfile();
+
+      await Flushbar(
+          title: 'เข้าสู่ระบบสำเร็จ',
+          message: 'Loading...',
+          showProgressIndicator: true,
+          flushbarPosition: FlushbarPosition.TOP,
+          flushbarStyle: FlushbarStyle.GROUNDED,
+          duration: Duration(seconds: 2))
+        ..show(context);
+
+      Future.delayed(Duration(seconds: 3), () async {
+        await Navigator.of(context, rootNavigator: true)
+            .pushNamedAndRemoveUntil('/', (route) => false);
+      });
+    } else {
+      var feedback = jsonDecode(response.body);
+      Flushbar(
+        title: '${feedback['message']}',
+        message: 'เกิดข้อผิดพลาด',
+        icon: Icon(
+          Icons.error,
+          color: Colors.red[300],
+          size: 28,
+        ),
+        duration: Duration(seconds: 1),
+        leftBarIndicatorColor: Colors.green,
+      )..show(context);
+      //
+    }
+  }
 
   FocusNode myFocusNode;
 
@@ -20,6 +86,7 @@ class _LoginFormState extends State<LoginForm> {
   void initState() {
     emailController = TextEditingController();
     passwordController = TextEditingController();
+    _initPref();
     super.initState();
     myFocusNode = FocusNode();
   }
@@ -92,28 +159,28 @@ class _LoginFormState extends State<LoginForm> {
 
               _errorEmail = null;
 
-              if (!email.isNotEmpty && !password.isNotEmpty && !emailIsValid) {
+              if (!email.isNotEmpty || !password.isNotEmpty || !emailIsValid) {
                 _errorEmail = 'The Email must be a valid email.';
               }
 
               if (_errorEmail == null) {
-                setState(() {});
-                if (email == 'sing@dev.com' && password == '1234') {
-                  print('pass');
-                } else {
-                  Flushbar(
-                    title: "email or password is incorrect",
-                    message: "Please try again",
-                    icon: Icon(
-                      Icons.error,
-                      size: 28,
-                      color: Colors.red,
-                    ),
-                    duration: Duration(seconds: 4),
-                  )..show(context);
-                }
+                _formKey = {
+                  'email': email,
+                  'password': password,
+                };
+                _login(_formKey);
               } else {
-                print(_errorEmail);
+                Flushbar(
+                  title: "email or password is incorrect",
+                  message: "Please try again",
+                  icon: Icon(
+                    Icons.error,
+                    size: 28,
+                    color: Colors.red,
+                  ),
+                  duration: Duration(seconds: 4),
+                )..show(context);
+
                 setState(() {});
               }
             },

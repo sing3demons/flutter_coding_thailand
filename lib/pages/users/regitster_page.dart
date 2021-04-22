@@ -29,18 +29,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
     if (response.statusCode == 201) {
       // var feedback = jsonDecode(response.body);
-      // Flushbar(
-      //   title: '${feedback['message']}',
-      //   message: 'ลงทะเบียนสำเร็จ',
-      //   icon: Icon(
-      //     Icons.info_outline,
-      //     color: Colors.blue[300],
-      //     size: 28,
-      //   ),
-      //   duration: Duration(seconds: 1),
-      //   leftBarIndicatorColor: Colors.green,
-      // )..show(context);
-      //
+    
       Flushbar(
           message: 'Loading...',
           showProgressIndicator: true,

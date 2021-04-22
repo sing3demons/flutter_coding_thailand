@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_coding_thailand/routes/routes.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Menu extends StatefulWidget {
   Menu({Key key}) : super(key: key);
@@ -10,6 +13,25 @@ class Menu extends StatefulWidget {
 }
 
 class _MenuState extends State<Menu> {
+  SharedPreferences prefs;
+  var name;
+
+  _initPref() async {
+    prefs = await SharedPreferences.getInstance();
+    var profile = await prefs.getString('profile');
+    var json = jsonDecode(profile);
+    setState(() {
+      name = json['name'];
+    });
+    print(name);
+  }
+
+  @override
+  void initState() {
+    _initPref();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,7 +44,7 @@ class _MenuState extends State<Menu> {
                 backgroundImage: NetworkImage(
                     'https://cdn-images-1.medium.com/max/280/1*X5PBTDQQ2Csztg3a6wofIQ@2x.png'),
               ),
-              accountName: Text('KPsing'),
+              accountName: name != null ? Text('$name') : Text('KPsing'),
               accountEmail: Text('sing@dev.com'),
             ),
             Column(
