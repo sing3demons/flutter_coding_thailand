@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_coding_thailand/routes/routes.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:another_flushbar/flushbar.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -8,24 +11,32 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   TextEditingController emailController;
   TextEditingController passwordController;
+  String _errorEmail;
+  bool emailIsValid = false;
+
+  FocusNode myFocusNode;
 
   @override
   void initState() {
     emailController = TextEditingController();
     passwordController = TextEditingController();
     super.initState();
+    myFocusNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    emailController?.dispose();
+    passwordController?.dispose();
+    myFocusNode.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: InkWell(
-        onTap: () {
-          print('ok');
-        },
-        child: _buildColumnNews(),
-      ),
+      child: _buildColumnNews(),
     );
   }
 
@@ -41,20 +52,27 @@ class _LoginFormState extends State<LoginForm> {
         ),
         Container(
           padding: const EdgeInsets.all(10.0),
-          child: TextField(
-            controller: emailController,
-            keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(
-                border: OutlineInputBorder(), labelText: 'Email'),
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.all(10.0),
-          child: TextField(
-            controller: passwordController,
-            obscureText: true,
-            decoration: InputDecoration(
-                border: OutlineInputBorder(), labelText: 'Password'),
+          child: Column(
+            children: [
+              TextField(
+                autofocus: true,
+                controller: emailController,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  errorText: _errorEmail,
+                  border: OutlineInputBorder(),
+                  labelText: 'Email',
+                ),
+              ),
+              SizedBox(height: 10),
+              TextField(
+                focusNode: myFocusNode,
+                controller: passwordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(), labelText: 'Password'),
+              ),
+            ],
           ),
         ),
         TextButton(
@@ -70,10 +88,33 @@ class _LoginFormState extends State<LoginForm> {
             onPressed: () {
               String email = emailController.text;
               String password = passwordController.text;
+              emailIsValid = EmailValidator.validate(email);
 
-              if (email.isNotEmpty && password.isNotEmpty) {
-                print('Email: $email');
-                print('Password: $password');
+              _errorEmail = null;
+
+              if (!email.isNotEmpty && !password.isNotEmpty && !emailIsValid) {
+                _errorEmail = 'The Email must be a valid email.';
+              }
+
+              if (_errorEmail == null) {
+                setState(() {});
+                if (email == 'sing@dev.com' && password == '1234') {
+                  print('pass');
+                } else {
+                  Flushbar(
+                    title: "email or password is incorrect",
+                    message: "Please try again",
+                    icon: Icon(
+                      Icons.error,
+                      size: 28,
+                      color: Colors.red,
+                    ),
+                    duration: Duration(seconds: 4),
+                  )..show(context);
+                }
+              } else {
+                print(_errorEmail);
+                setState(() {});
               }
             },
             style: ButtonStyle(
@@ -90,7 +131,9 @@ class _LoginFormState extends State<LoginForm> {
             children: [
               Text('ไม่มีบัญชี ?'),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, Routes.regitster);
+                },
                 child: Text(
                   'Sign Up',
                   style: TextStyle(fontSize: 18),

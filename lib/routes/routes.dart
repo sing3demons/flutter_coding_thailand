@@ -30,6 +30,7 @@ class Routes {
   //Login
   static const usersStack = '/users';
   static const login = 'users/login';
+  static const regitster = 'users/register';
 
   static final Map<String, WidgetBuilder> _route = {
     home: (BuildContext context) => HomePage(),

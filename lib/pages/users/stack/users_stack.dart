@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_coding_thailand/pages/users/login_page.dart';
+import 'package:flutter_coding_thailand/pages/users/regitster_page.dart';
 import 'package:flutter_coding_thailand/routes/routes.dart';
 
 class UsersStack extends StatefulWidget {
@@ -18,7 +19,9 @@ class _UsersStackState extends State<UsersStack> {
           case Routes.login:
             builder = (BuildContext _) => LoginPage();
             break;
-
+          case Routes.regitster:
+            builder = (BuildContext _) => RegisterPage();
+            break;
           default:
             throw Exception('Invalid route: ${settings.name}');
         }
