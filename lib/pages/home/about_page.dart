@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_coding_thailand/redux/reducer/app_reducer.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_coding_thailand/routes/routes.dart';
@@ -103,19 +105,31 @@ class _AboutPageState extends State<AboutPage> {
               return CircularProgressIndicator();
             },
           ),
-          Text('About Page'),
-          Text('email: ${msg['email']}'),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context, 'KPSING');
-            },
-            child: Text('go to home'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.pushNamed(context, Routes.contact);
-            },
-            child: Text('contact'),
+          StoreConnector<AppState, Map<String, dynamic>>(
+            distinct: true,
+            converter: (store) => store.state.profileState.profile,
+            builder: (context, profile) => Column(
+              children: [
+                SizedBox(
+                  height: 10,
+                ),
+                Text('About Page'),
+                profile != null ? Text('email: ${profile['email']}') : Text(''),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(
+                        context, profile != null ? '${profile['name']}' : '');
+                  },
+                  child: Text('go to home'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, Routes.contact);
+                  },
+                  child: Text('contact'),
+                ),
+              ],
+            ),
           ),
         ],
       ),

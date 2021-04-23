@@ -29,15 +29,19 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             StoreConnector<AppState, Map<String, dynamic>>(
-              converter: (store) => store.state.profileState.profile,
-              builder: (context, vm) => Expanded(
-                child: Center(
-                  child: Text('Welcom : ${vm['name']}',
-                      style: TextStyle(color: Colors.white)),
-                ),
-                flex: 1,
-              ),
-            ),
+                  distinct: false,
+                  converter: (store) => store.state.profileState.profile,
+                  builder: (context, data) => Expanded(
+                    child: Center(
+                      child: data == null
+                          ? Text('')
+                          : Text('Welcom : ${data['name']}',
+                              style: TextStyle(color: Colors.white)),
+                    ),
+                    flex: 1,
+                  ),
+                ) ??
+                Text(''),
             Expanded(
               flex: 10,
               child: GridView.count(

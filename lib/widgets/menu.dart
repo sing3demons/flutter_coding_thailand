@@ -1,6 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_coding_thailand/redux/acions/action.dart';
 import 'package:flutter_coding_thailand/redux/reducer/app_reducer.dart';
 import 'package:flutter_coding_thailand/routes/routes.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -17,15 +16,10 @@ class Menu extends StatefulWidget {
 class _MenuState extends State<Menu> {
   SharedPreferences prefs;
   String token;
-  String name;
 
   _initPref() async {
     prefs = await SharedPreferences.getInstance();
-    var profile = prefs.getString('profile');
-    var json = jsonDecode(profile);
-
     setState(() {
-      name = json['name'];
       token = prefs.getString('token');
     });
   }
@@ -50,9 +44,12 @@ class _MenuState extends State<Menu> {
                   backgroundImage: NetworkImage(
                       'https://cdn-images-1.medium.com/max/280/1*X5PBTDQQ2Csztg3a6wofIQ@2x.png'),
                 ),
-                accountName:
-                    name != null ? Text('${profile['name']}') : Text('KPsing'),
-                accountEmail: Text('${profile['email']}') ?? Text('s@dev.com'),
+                accountName: profile != null
+                    ? Text('${profile['name']}')
+                    : Text('KPsing'),
+                accountEmail: profile != null
+                    ? Text('${profile['email']}')
+                    : Text('s@dev.com'),
               ),
             ),
             Column(
@@ -103,8 +100,9 @@ class _MenuState extends State<Menu> {
                             ModalRoute.of(context).settings.name == Routes.login
                                 ? true
                                 : false,
-                        onTap: () {
-                          Navigator.of(context, rootNavigator: true)
+                        onTap: () async {
+                          print('login page $token');
+                          await Navigator.of(context, rootNavigator: true)
                               .pushNamedAndRemoveUntil(
                                   Routes.usersStack, (route) => false);
                         },
@@ -134,8 +132,15 @@ class _MenuState extends State<Menu> {
                                   onPressed: () async {
                                     await prefs.remove('token');
                                     await prefs.remove('profile');
+                                    Map<String, dynamic> profile = {};
 
-                                    Navigator.of(context, rootNavigator: true)
+                                    print('build menu');
+                                    final store =
+                                        StoreProvider.of<AppState>(context);
+                                    store.dispatch(getProfileAction(profile));
+
+                                    await Navigator.of(context,
+                                            rootNavigator: true)
                                         .pushNamedAndRemoveUntil(
                                             Routes.usersStack,
                                             (route) =>

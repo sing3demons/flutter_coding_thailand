@@ -1,5 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter_coding_thailand/redux/acions/action.dart';
+import 'package:flutter_coding_thailand/redux/reducer/app_reducer.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_coding_thailand/routes/routes.dart';
@@ -44,21 +47,26 @@ class _LoginFormState extends State<LoginForm> {
       var profile = data['data']['user'];
 
       prefs.setString('profile', jsonEncode(profile));
+
+      final store = StoreProvider.of<AppState>(context);
+      store.dispatch(getProfileAction(profile));
     }
+
+    Flushbar _loading() => Flushbar(
+        title: 'เข้าสู่ระบบสำเร็จ',
+        message: 'Loading...',
+        showProgressIndicator: true,
+        flushbarPosition: FlushbarPosition.TOP,
+        flushbarStyle: FlushbarStyle.GROUNDED,
+        duration: Duration(seconds: 2))
+      ..show(context);
 
     if (response.statusCode == HttpStatus.ok) {
       await prefs.setString('token', response.body);
 
       _getProfile();
 
-      Flushbar(
-          title: 'เข้าสู่ระบบสำเร็จ',
-          message: 'Loading...',
-          showProgressIndicator: true,
-          flushbarPosition: FlushbarPosition.TOP,
-          flushbarStyle: FlushbarStyle.GROUNDED,
-          duration: Duration(seconds: 2))
-        ..show(context);
+      _loading();
 
       Future.delayed(Duration(seconds: 3), () async {
         await Navigator.of(context, rootNavigator: true)

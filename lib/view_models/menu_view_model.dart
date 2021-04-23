@@ -78,13 +78,7 @@ class MenuViewModel {
           color: _color,
           iconColor: _colorIcon,
           onTap: (context) async {
-            var result =
-                await Navigator.pushNamed(context, Routes.about, arguments: {
-              'email': 'sing3demons@livew.com',
-            });
-            ScaffoldMessenger.of(context)
-              ..removeCurrentSnackBar()
-              ..showSnackBar(SnackBar(content: Text('$result')));
+            await Navigator.pushNamed(context, Routes.about);
           },
         ),
       ];
