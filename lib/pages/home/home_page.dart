@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_coding_thailand/redux/reducer/app_reducer.dart';
 import 'package:flutter_coding_thailand/view_models/menu_view_model.dart';
 import 'package:flutter_coding_thailand/widgets/menu.dart' as mainMenu;
-
+import 'package:flutter_redux/flutter_redux.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -25,14 +26,31 @@ class _HomePageState extends State<HomePage> {
             image: AssetImage('assets/images/bg.jpg'),
           ),
         ),
-        child: GridView.count(
-          primary: false,
-          padding: const EdgeInsets.all(20),
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-          crossAxisCount: 2,
-          children: <Widget>[
-            ..._buildMainMenu(),
+        child: Column(
+          children: [
+            StoreConnector<AppState, Map<String, dynamic>>(
+              converter: (store) => store.state.profileState.profile,
+              builder: (context, vm) => Expanded(
+                child: Center(
+                  child: Text('Welcom : ${vm['name']}',
+                      style: TextStyle(color: Colors.white)),
+                ),
+                flex: 1,
+              ),
+            ),
+            Expanded(
+              flex: 10,
+              child: GridView.count(
+                primary: false,
+                padding: const EdgeInsets.all(20),
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                crossAxisCount: 2,
+                children: <Widget>[
+                  ..._buildMainMenu(),
+                ],
+              ),
+            ),
           ],
         ),
       ),

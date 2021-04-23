@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_coding_thailand/routes/routes.dart';
@@ -32,8 +33,8 @@ class _LoginFormState extends State<LoginForm> {
     );
 
     Future<void> _getProfile() async {
-      var tokenString = await prefs.getString('token');
-      var token = jsonDecode(tokenString);
+      String tokenString = prefs.getString('token');
+      Map<String, dynamic> token = jsonDecode(tokenString);
 
       var response = await get(
           Uri.parse('https://api.codingthailand.com/api/profile'),
@@ -45,12 +46,12 @@ class _LoginFormState extends State<LoginForm> {
       prefs.setString('profile', jsonEncode(profile));
     }
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == HttpStatus.ok) {
       await prefs.setString('token', response.body);
 
       _getProfile();
 
-      await Flushbar(
+      Flushbar(
           title: 'เข้าสู่ระบบสำเร็จ',
           message: 'Loading...',
           showProgressIndicator: true,

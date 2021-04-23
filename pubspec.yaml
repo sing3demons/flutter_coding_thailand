@@ -37,6 +37,7 @@ dependencies:
   email_validator: ^2.0.1
   another_flushbar: ^1.10.18
   shared_preferences: ^2.0.5
+  flutter_redux: ^0.8.2
 
 dev_dependencies:
   flutter_test:

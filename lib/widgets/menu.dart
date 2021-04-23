@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_coding_thailand/redux/reducer/app_reducer.dart';
 import 'package:flutter_coding_thailand/routes/routes.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,16 +16,18 @@ class Menu extends StatefulWidget {
 
 class _MenuState extends State<Menu> {
   SharedPreferences prefs;
-  var name;
+  String token;
+  String name;
 
   _initPref() async {
     prefs = await SharedPreferences.getInstance();
-    var profile = await prefs.getString('profile');
+    var profile = prefs.getString('profile');
     var json = jsonDecode(profile);
+
     setState(() {
       name = json['name'];
+      token = prefs.getString('token');
     });
-    print(name);
   }
 
   @override
@@ -39,13 +43,17 @@ class _MenuState extends State<Menu> {
       child: Drawer(
         child: ListView(
           children: [
-            UserAccountsDrawerHeader(
-              currentAccountPicture: CircleAvatar(
-                backgroundImage: NetworkImage(
-                    'https://cdn-images-1.medium.com/max/280/1*X5PBTDQQ2Csztg3a6wofIQ@2x.png'),
+            StoreConnector<AppState, Map<String, dynamic>>(
+              converter: (store) => store.state.profileState.profile,
+              builder: (context, profile) => UserAccountsDrawerHeader(
+                currentAccountPicture: CircleAvatar(
+                  backgroundImage: NetworkImage(
+                      'https://cdn-images-1.medium.com/max/280/1*X5PBTDQQ2Csztg3a6wofIQ@2x.png'),
+                ),
+                accountName:
+                    name != null ? Text('${profile['name']}') : Text('KPsing'),
+                accountEmail: Text('${profile['email']}') ?? Text('s@dev.com'),
               ),
-              accountName: name != null ? Text('$name') : Text('KPsing'),
-              accountEmail: Text('sing@dev.com'),
             ),
             Column(
               children: [
@@ -86,25 +94,61 @@ class _MenuState extends State<Menu> {
                             Routes.newsstack, (route) => false);
                   },
                 ),
-                ListTile(
-                  selected: ModalRoute.of(context).settings.name == Routes.login
-                      ? true
-                      : false,
-                  onTap: () {
-                    Navigator.of(context, rootNavigator: true)
-                        .pushNamedAndRemoveUntil(
-                            Routes.usersStack, (route) => false);
-                  },
-                  leading: FaIcon(FontAwesomeIcons.signInAlt),
-                  title: Text('login'),
-                ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.45,
                 ),
-                ListTile(
-                  leading: FaIcon(FontAwesomeIcons.signOutAlt),
-                  title: Text('logout'),
-                ),
+                token == null
+                    ? ListTile(
+                        selected:
+                            ModalRoute.of(context).settings.name == Routes.login
+                                ? true
+                                : false,
+                        onTap: () {
+                          Navigator.of(context, rootNavigator: true)
+                              .pushNamedAndRemoveUntil(
+                                  Routes.usersStack, (route) => false);
+                        },
+                        leading: FaIcon(FontAwesomeIcons.signInAlt),
+                        title: Text('login'),
+                      )
+                    : ListTile(
+                        onTap: () async {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: Text('แจ้งเตือน'),
+                              content: Text('Are you sure you want to logout?'),
+                              actions: [
+                                TextButton(
+                                  child: Text('Cancel'),
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                        .pop(); // Dismiss alert dialog
+                                  },
+                                ),
+                                TextButton(
+                                  style: TextButton.styleFrom(
+                                    primary: Colors.red,
+                                  ),
+                                  child: Text('Logout'),
+                                  onPressed: () async {
+                                    await prefs.remove('token');
+                                    await prefs.remove('profile');
+
+                                    Navigator.of(context, rootNavigator: true)
+                                        .pushNamedAndRemoveUntil(
+                                            Routes.usersStack,
+                                            (route) =>
+                                                false); // Dismiss alert dialog
+                                  },
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        leading: FaIcon(FontAwesomeIcons.signOutAlt),
+                        title: Text('logout'),
+                      ),
               ],
             ),
           ],
