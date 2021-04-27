@@ -4,6 +4,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_coding_thailand/routes/routes.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 
@@ -15,6 +16,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormBuilderState>();
   AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
+  bool _obscureText = true;
 
   _register(Map<String, dynamic> value) async {
     var url = Uri.parse('https://api.codingthailand.com/api/register');
@@ -28,8 +30,6 @@ class _RegisterPageState extends State<RegisterPage> {
         }));
 
     if (response.statusCode == 201) {
-      // var feedback = jsonDecode(response.body);
-    
       Flushbar(
           message: 'Loading...',
           showProgressIndicator: true,
@@ -90,98 +90,15 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            FormBuilderTextField(
-              maxLines: 1,
-              name: 'name',
-              decoration: InputDecoration(
-                filled: true,
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
-                labelText: 'Name',
-              ),
-              validator: FormBuilderValidators.compose([
-                FormBuilderValidators.required(context,
-                    errorText: 'ป้อนข้อมูล'),
-                FormBuilderValidators.max(context, 70),
-              ]),
-              keyboardType: TextInputType.text,
-            ),
+            _name_FormBuilderTextField(context),
             SizedBox(height: 10),
-            FormBuilderTextField(
-              maxLines: 1,
-              name: 'email',
-              decoration: InputDecoration(
-                filled: true,
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
-                labelText: 'Email',
-              ),
-              validator: FormBuilderValidators.compose([
-                FormBuilderValidators.required(context,
-                    errorText: 'ป้อนข้อมูล'),
-                FormBuilderValidators.email(context,
-                    errorText: 'รูปแบบอีเมล์ไม่ถูกต้อง'),
-                FormBuilderValidators.max(context, 70),
-              ]),
-              keyboardType: TextInputType.emailAddress,
-            ),
+            _email_FormBuilderTextField(context),
             SizedBox(height: 10),
-            FormBuilderTextField(
-              obscureText: true,
-              maxLines: 1,
-              name: 'password',
-              decoration: InputDecoration(
-                filled: true,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                ),
-                labelText: 'Password',
-              ),
-              validator: FormBuilderValidators.compose([
-                FormBuilderValidators.required(context,
-                    errorText: 'ป้อนข้อมูล'),
-                FormBuilderValidators.minLength(context, 3),
-              ]),
-              keyboardType: TextInputType.text,
-            ),
+            _password_FormBuilderTextField(context),
             SizedBox(height: 10),
-            FormBuilderDateTimePicker(
-              name: 'dob',
-              inputType: InputType.date,
-              format: DateFormat('yyyy-MM-dd'),
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                ),
-                labelText: 'วัน/เดือน/ปี เกิด',
-              ),
-            ),
+            _date_FormBuilderDateTimePicker(),
             SizedBox(height: 10),
-            SizedBox(
-              width: 200,
-              child: MaterialButton(
-                color: Colors.blue,
-                padding: const EdgeInsets.all(20),
-                highlightColor: Colors.amber,
-                onPressed: () {
-                  if (_formKey.currentState.saveAndValidate()) {
-                    // print(_formKey.currentState.value);
-                    _register(_formKey.currentState.value);
-                  } else {
-                    setState(() {
-                      _autovalidateMode = AutovalidateMode.always;
-                    });
-                  }
-                },
-                child: Text(
-                  'Register',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w500),
-                ),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-              ),
-            ),
+            _registerButton(),
             Container(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -203,4 +120,118 @@ class _RegisterPageState extends State<RegisterPage> {
           ],
         ),
       );
+
+  SizedBox _registerButton() {
+    return SizedBox(
+      width: 200,
+      child: MaterialButton(
+        color: Colors.blue,
+        padding: const EdgeInsets.all(20),
+        highlightColor: Colors.amber,
+        onPressed: () {
+          if (_formKey.currentState.saveAndValidate()) {
+            // print(_formKey.currentState.value);
+            _register(_formKey.currentState.value);
+          } else {
+            setState(() {
+              _autovalidateMode = AutovalidateMode.always;
+            });
+          }
+        },
+        child: Text(
+          'Register',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      ),
+    );
+  }
+
+  FormBuilderDateTimePicker _date_FormBuilderDateTimePicker() {
+    return FormBuilderDateTimePicker(
+      name: 'dob',
+      inputType: InputType.date,
+      format: DateFormat('yyyy-MM-dd'),
+      decoration: InputDecoration(
+        icon: FaIcon(FontAwesomeIcons.calendar),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        labelText: 'วัน/เดือน/ปี เกิด',
+      ),
+    );
+  }
+
+  FormBuilderTextField _password_FormBuilderTextField(BuildContext context) {
+    return FormBuilderTextField(
+      textInputAction: TextInputAction.next,
+      obscureText: _obscureText,
+      maxLines: 1,
+      name: 'password',
+      decoration: InputDecoration(
+        suffixIcon: IconButton(
+          icon: FaIcon(
+              _obscureText ? FontAwesomeIcons.eye : FontAwesomeIcons.eyeSlash),
+          onPressed: () {
+            setState(() {
+              _obscureText = !_obscureText;
+            });
+          },
+        ),
+        icon: FaIcon(FontAwesomeIcons.lock),
+        filled: true,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        labelText: 'Password',
+      ),
+      validator: FormBuilderValidators.compose([
+        FormBuilderValidators.required(context, errorText: 'ป้อนข้อมูล'),
+        FormBuilderValidators.minLength(context, 3),
+      ]),
+      keyboardType: TextInputType.text,
+    );
+  }
+
+  FormBuilderTextField _email_FormBuilderTextField(BuildContext context) {
+    return FormBuilderTextField(
+      textInputAction: TextInputAction.next,
+      maxLines: 1,
+      name: 'email',
+      decoration: InputDecoration(
+        icon: FaIcon(FontAwesomeIcons.envelope),
+        filled: true,
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20))),
+        labelText: 'Email',
+      ),
+      validator: FormBuilderValidators.compose([
+        FormBuilderValidators.required(context, errorText: 'ป้อนข้อมูล'),
+        FormBuilderValidators.email(context,
+            errorText: 'รูปแบบอีเมล์ไม่ถูกต้อง'),
+        FormBuilderValidators.max(context, 70),
+      ]),
+      keyboardType: TextInputType.emailAddress,
+    );
+  }
+
+  FormBuilderTextField _name_FormBuilderTextField(BuildContext context) {
+    return FormBuilderTextField(
+      textInputAction: TextInputAction.next,
+      maxLines: 1,
+      name: 'name',
+      decoration: InputDecoration(
+        icon: FaIcon(FontAwesomeIcons.user),
+        filled: true,
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20))),
+        labelText: 'Name',
+      ),
+      validator: FormBuilderValidators.compose([
+        FormBuilderValidators.required(context, errorText: 'ป้อนข้อมูล'),
+        FormBuilderValidators.max(context, 70),
+      ]),
+      keyboardType: TextInputType.text,
+    );
+  }
 }

@@ -31,10 +31,11 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         initialRoute: '/',
         routes: {
-          Routes.root: (BuildContext context) => HomeStack(),
-          Routes.productstack: (context) => ProductStack(),
-          Routes.usersStack: (context) =>
+          Routes.root: (BuildContext context) =>
               token == null ? UsersStack() : HomeStack(),
+          Routes.productstack: (context) => ProductStack(),
+          // Routes.usersStack: (context) =>
+          //     token == null ? UsersStack() : HomeStack(),
           Routes.newsstack: (context) => NewsStack(),
         },
       ),

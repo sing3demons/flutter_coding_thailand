@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter_coding_thailand/redux/acions/action.dart';
 import 'package:flutter_coding_thailand/redux/reducer/app_reducer.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_coding_thailand/routes/routes.dart';
@@ -22,6 +23,7 @@ class _LoginFormState extends State<LoginForm> {
   bool emailIsValid = false;
   Map<String, dynamic> _formKey = {};
   SharedPreferences prefs;
+  bool _obscureText;
 
   _initPref() async {
     prefs = await SharedPreferences.getInstance();
@@ -38,6 +40,7 @@ class _LoginFormState extends State<LoginForm> {
     Future<void> _getProfile() async {
       String tokenString = prefs.getString('token');
       Map<String, dynamic> token = jsonDecode(tokenString);
+      FocusNode _passwordFocusNode;
 
       var response = await get(
           Uri.parse('https://api.codingthailand.com/api/profile'),
@@ -98,6 +101,7 @@ class _LoginFormState extends State<LoginForm> {
     _initPref();
     super.initState();
     myFocusNode = FocusNode();
+    _obscureText = true;
   }
 
   @override
@@ -130,77 +134,14 @@ class _LoginFormState extends State<LoginForm> {
           padding: const EdgeInsets.all(10.0),
           child: Column(
             children: [
-              TextField(
-                autofocus: true,
-                controller: emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  errorText: _errorEmail,
-                  border: OutlineInputBorder(),
-                  labelText: 'Email',
-                ),
-              ),
+              _emailTextField(),
               SizedBox(height: 10),
-              TextField(
-                focusNode: myFocusNode,
-                controller: passwordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(), labelText: 'Password'),
-              ),
+              _passwordTextField(),
             ],
           ),
         ),
-        TextButton(
-          onPressed: () {},
-          child: Text('Forgot Password'),
-          style: TextButton.styleFrom(primary: Colors.blue),
-        ),
-        Container(
-          height: 50,
-          width: double.maxFinite,
-          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-          child: TextButton(
-            onPressed: () {
-              String email = emailController.text;
-              String password = passwordController.text;
-              emailIsValid = EmailValidator.validate(email);
-
-              _errorEmail = null;
-
-              if (!email.isNotEmpty || !password.isNotEmpty || !emailIsValid) {
-                _errorEmail = 'The Email must be a valid email.';
-              }
-
-              if (_errorEmail == null) {
-                _formKey = {
-                  'email': email,
-                  'password': password,
-                };
-                _login(_formKey);
-              } else {
-                Flushbar(
-                  title: "email or password is incorrect",
-                  message: "Please try again",
-                  icon: Icon(
-                    Icons.error,
-                    size: 28,
-                    color: Colors.red,
-                  ),
-                  duration: Duration(seconds: 4),
-                )..show(context);
-
-                setState(() {});
-              }
-            },
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.blue)),
-            child: Text(
-              'Login',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        ),
+        _forgotPasswordButton(),
+        _loginButton(),
         Container(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -224,4 +165,96 @@ class _LoginFormState extends State<LoginForm> {
       ],
     );
   }
+
+  TextButton _forgotPasswordButton() {
+    return TextButton(
+        onPressed: () {},
+        child: Text('Forgot Password'),
+        style: TextButton.styleFrom(primary: Colors.blue),
+      );
+  }
+
+  Container _loginButton() {
+    return Container(
+        height: 50,
+        width: double.maxFinite,
+        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+        child: TextButton(
+          onPressed: () {
+            String email = emailController.text;
+            String password = passwordController.text;
+            emailIsValid = EmailValidator.validate(email);
+
+            _errorEmail = null;
+
+            if (!email.isNotEmpty || !password.isNotEmpty || !emailIsValid) {
+              _errorEmail = 'The Email must be a valid email.';
+            }
+
+            if (_errorEmail == null) {
+              _formKey = {
+                'email': email,
+                'password': password,
+              };
+              _login(_formKey);
+            } else {
+              Flushbar(
+                title: "email or password is incorrect",
+                message: "Please try again",
+                icon: Icon(
+                  Icons.error,
+                  size: 28,
+                  color: Colors.red,
+                ),
+                duration: Duration(seconds: 4),
+              )..show(context);
+
+              setState(() {});
+            }
+          },
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(Colors.blue)),
+          child: Text(
+            'Login',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      );
+  }
+
+  TextField _passwordTextField() => TextField(
+        focusNode: myFocusNode,
+        controller: passwordController,
+        obscureText: _obscureText,
+        decoration: InputDecoration(
+          suffixIcon: IconButton(
+            icon: FaIcon(_obscureText
+                ? FontAwesomeIcons.eye
+                : FontAwesomeIcons.eyeSlash),
+            onPressed: () {
+              setState(() {
+                _obscureText = !_obscureText;
+              });
+            },
+          ),
+          border: OutlineInputBorder(),
+          labelText: 'Password',
+          icon: FaIcon(FontAwesomeIcons.lock),
+        ),
+      );
+
+  TextField _emailTextField() => TextField(
+        textInputAction: TextInputAction.next,
+        onSubmitted: (value) =>
+            FocusScope.of(context).requestFocus(myFocusNode),
+        autofocus: true,
+        controller: emailController,
+        keyboardType: TextInputType.emailAddress,
+        decoration: InputDecoration(
+          icon: FaIcon(FontAwesomeIcons.envelope),
+          errorText: _errorEmail,
+          border: OutlineInputBorder(),
+          labelText: 'Email',
+        ),
+      );
 }
