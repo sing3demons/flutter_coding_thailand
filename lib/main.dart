@@ -20,9 +20,9 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  // const MyApp({Key key}) : super(key: key);
+  // const MyApp({Key key, this.store}) : super(key: key);
   final Store<AppState> store;
-  const MyApp({this.store});
+  MyApp({this.store});
 
   @override
   Widget build(BuildContext context) {
@@ -31,11 +31,10 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         initialRoute: '/',
         routes: {
-          Routes.root: (BuildContext context) =>
-              token == null ? UsersStack() : HomeStack(),
+          Routes.root: (BuildContext context) => HomeStack(),
           Routes.productstack: (context) => ProductStack(),
-          // Routes.usersStack: (context) =>
-          //     token == null ? UsersStack() : HomeStack(),
+          Routes.usersStack: (context) =>
+              token == null ? UsersStack() : HomeStack(),
           Routes.newsstack: (context) => NewsStack(),
         },
       ),

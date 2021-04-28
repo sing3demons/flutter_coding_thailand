@@ -5,9 +5,10 @@ import 'package:meta/meta.dart';
 class GetProfileAction {
   final ProfileState profileState;
 
-  GetProfileAction({this.profileState});
+  GetProfileAction(this.profileState);
 }
 
 //action
-getProfileAction(Map profile) =>
-    GetProfileAction(profileState: ProfileState(profile: profile));
+getProfileAction(Map profile) {
+  return GetProfileAction(ProfileState(profile: profile));
+}

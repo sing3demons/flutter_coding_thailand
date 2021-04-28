@@ -1,7 +1,6 @@
 import 'dart:convert';
-
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter_coding_thailand/routes/routes.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -90,13 +89,13 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            _name_FormBuilderTextField(context),
+            _nameFormBuilderTextField(context),
             SizedBox(height: 10),
-            _email_FormBuilderTextField(context),
+            _emailFormBuilderTextField(context),
             SizedBox(height: 10),
-            _password_FormBuilderTextField(context),
+            _passwordFormBuilderTextField(context),
             SizedBox(height: 10),
-            _date_FormBuilderDateTimePicker(),
+            _dateFormBuilderDateTimePicker(),
             SizedBox(height: 10),
             _registerButton(),
             Container(
@@ -147,7 +146,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  FormBuilderDateTimePicker _date_FormBuilderDateTimePicker() {
+  FormBuilderDateTimePicker _dateFormBuilderDateTimePicker() {
     return FormBuilderDateTimePicker(
       name: 'dob',
       inputType: InputType.date,
@@ -162,7 +161,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  FormBuilderTextField _password_FormBuilderTextField(BuildContext context) {
+  FormBuilderTextField _passwordFormBuilderTextField(BuildContext context) {
     return FormBuilderTextField(
       textInputAction: TextInputAction.next,
       obscureText: _obscureText,
@@ -172,11 +171,9 @@ class _RegisterPageState extends State<RegisterPage> {
         suffixIcon: IconButton(
           icon: FaIcon(
               _obscureText ? FontAwesomeIcons.eye : FontAwesomeIcons.eyeSlash),
-          onPressed: () {
-            setState(() {
-              _obscureText = !_obscureText;
-            });
-          },
+          onPressed: () => setState(() {
+            _obscureText = !_obscureText;
+          }),
         ),
         icon: FaIcon(FontAwesomeIcons.lock),
         filled: true,
@@ -193,7 +190,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  FormBuilderTextField _email_FormBuilderTextField(BuildContext context) {
+  FormBuilderTextField _emailFormBuilderTextField(BuildContext context) {
     return FormBuilderTextField(
       textInputAction: TextInputAction.next,
       maxLines: 1,
@@ -215,7 +212,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  FormBuilderTextField _name_FormBuilderTextField(BuildContext context) {
+  FormBuilderTextField _nameFormBuilderTextField(BuildContext context) {
     return FormBuilderTextField(
       textInputAction: TextInputAction.next,
       maxLines: 1,

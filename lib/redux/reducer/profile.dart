@@ -17,5 +17,6 @@ profileReducer(ProfileState state, dynamic action) {
   if (action is GetProfileAction) {
     return state.copyWith(profile: action.profileState.profile);
   }
+
   return state;
 }

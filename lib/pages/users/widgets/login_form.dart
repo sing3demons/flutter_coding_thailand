@@ -25,10 +25,6 @@ class _LoginFormState extends State<LoginForm> {
   SharedPreferences prefs;
   bool _obscureText;
 
-  _initPref() async {
-    prefs = await SharedPreferences.getInstance();
-  }
-
   _login(Map<String, dynamic> value) async {
     Uri url = Uri.parse('https://api.codingthailand.com/api/login');
     var response = await post(
@@ -37,39 +33,12 @@ class _LoginFormState extends State<LoginForm> {
       body: jsonEncode(value),
     );
 
-    Future<void> _getProfile() async {
-      String tokenString = prefs.getString('token');
-      Map<String, dynamic> token = jsonDecode(tokenString);
-      FocusNode _passwordFocusNode;
-
-      var response = await get(
-          Uri.parse('https://api.codingthailand.com/api/profile'),
-          headers: {'Authorization': "Bearer ${token['access_token']}"});
-
-      var data = jsonDecode(response.body);
-      var profile = data['data']['user'];
-
-      prefs.setString('profile', jsonEncode(profile));
-
-      final store = StoreProvider.of<AppState>(context);
-      store.dispatch(getProfileAction(profile));
-    }
-
-    Flushbar _loading() => Flushbar(
-        title: 'เข้าสู่ระบบสำเร็จ',
-        message: 'Loading...',
-        showProgressIndicator: true,
-        flushbarPosition: FlushbarPosition.TOP,
-        flushbarStyle: FlushbarStyle.GROUNDED,
-        duration: Duration(seconds: 2))
-      ..show(context);
-
     if (response.statusCode == HttpStatus.ok) {
       await prefs.setString('token', response.body);
 
-      _getProfile();
+      await _getProfile();
 
-      _loading();
+      await _loading();
 
       Future.delayed(Duration(seconds: 3), () async {
         await Navigator.of(context, rootNavigator: true)
@@ -103,6 +72,36 @@ class _LoginFormState extends State<LoginForm> {
     myFocusNode = FocusNode();
     _obscureText = true;
   }
+
+  _initPref() async {
+    prefs = await SharedPreferences.getInstance();
+  }
+
+  Future<void> _getProfile() async {
+    String tokenString = prefs.getString('token');
+    Map<String, dynamic> token = jsonDecode(tokenString);
+
+    var response = await get(
+        Uri.parse('https://api.codingthailand.com/api/profile'),
+        headers: {'Authorization': "Bearer ${token['access_token']}"});
+
+    var data = jsonDecode(response.body);
+    var profile = data['data']['user'];
+
+    await prefs.setString('profile', jsonEncode(profile));
+
+    final store = StoreProvider.of<AppState>(context);
+    store.dispatch(getProfileAction(profile));
+  }
+
+  Flushbar _loading() => Flushbar(
+      title: 'เข้าสู่ระบบสำเร็จ',
+      message: 'Loading...',
+      showProgressIndicator: true,
+      flushbarPosition: FlushbarPosition.TOP,
+      flushbarStyle: FlushbarStyle.GROUNDED,
+      duration: Duration(seconds: 2))
+    ..show(context);
 
   @override
   void dispose() {
@@ -140,8 +139,56 @@ class _LoginFormState extends State<LoginForm> {
             ],
           ),
         ),
-        _forgotPasswordButton(),
-        _loginButton(),
+        TextButton(
+          onPressed: () {},
+          child: Text('Forgot Password'),
+          style: TextButton.styleFrom(primary: Colors.blue),
+        ),
+        Container(
+          height: 50,
+          width: double.maxFinite,
+          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+          child: TextButton(
+            onPressed: () {
+              String email = emailController.text;
+              String password = passwordController.text;
+              emailIsValid = EmailValidator.validate(email);
+
+              _errorEmail = null;
+
+              if (!email.isNotEmpty || !password.isNotEmpty || !emailIsValid) {
+                _errorEmail = 'The Email must be a valid email.';
+              }
+
+              if (_errorEmail == null) {
+                _formKey = {
+                  'email': email,
+                  'password': password,
+                };
+                _login(_formKey);
+              } else {
+                Flushbar(
+                  title: "email or password is incorrect",
+                  message: "Please try again",
+                  icon: Icon(
+                    Icons.error,
+                    size: 28,
+                    color: Colors.red,
+                  ),
+                  duration: Duration(seconds: 4),
+                )..show(context);
+
+                setState(() {});
+              }
+            },
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.blue)),
+            child: Text(
+              'Login',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
         Container(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -164,62 +211,6 @@ class _LoginFormState extends State<LoginForm> {
         ),
       ],
     );
-  }
-
-  TextButton _forgotPasswordButton() {
-    return TextButton(
-        onPressed: () {},
-        child: Text('Forgot Password'),
-        style: TextButton.styleFrom(primary: Colors.blue),
-      );
-  }
-
-  Container _loginButton() {
-    return Container(
-        height: 50,
-        width: double.maxFinite,
-        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-        child: TextButton(
-          onPressed: () {
-            String email = emailController.text;
-            String password = passwordController.text;
-            emailIsValid = EmailValidator.validate(email);
-
-            _errorEmail = null;
-
-            if (!email.isNotEmpty || !password.isNotEmpty || !emailIsValid) {
-              _errorEmail = 'The Email must be a valid email.';
-            }
-
-            if (_errorEmail == null) {
-              _formKey = {
-                'email': email,
-                'password': password,
-              };
-              _login(_formKey);
-            } else {
-              Flushbar(
-                title: "email or password is incorrect",
-                message: "Please try again",
-                icon: Icon(
-                  Icons.error,
-                  size: 28,
-                  color: Colors.red,
-                ),
-                duration: Duration(seconds: 4),
-              )..show(context);
-
-              setState(() {});
-            }
-          },
-          style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(Colors.blue)),
-          child: Text(
-            'Login',
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-      );
   }
 
   TextField _passwordTextField() => TextField(

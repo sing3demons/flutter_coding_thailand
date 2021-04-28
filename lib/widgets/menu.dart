@@ -26,8 +26,8 @@ class _MenuState extends State<Menu> {
 
   @override
   void initState() {
-    _initPref();
     super.initState();
+    _initPref();
   }
 
   @override
@@ -44,12 +44,18 @@ class _MenuState extends State<Menu> {
                   backgroundImage: NetworkImage(
                       'https://cdn-images-1.medium.com/max/280/1*X5PBTDQQ2Csztg3a6wofIQ@2x.png'),
                 ),
-                accountName: profile != null
-                    ? Text('${profile['name']}')
-                    : Text('KPsing'),
-                accountEmail: profile != null
-                    ? Text('${profile['email']}')
-                    : Text('s@dev.com'),
+                accountName:
+                    profile != null ? Text('${profile['name']}') : Text(''),
+                accountEmail:
+                    profile != null ? Text('${profile['email']}') : Text(''),
+                otherAccountsPictures: [
+                  IconButton(
+                    icon: FaIcon(FontAwesomeIcons.edit),
+                    onPressed: () => Navigator.of(context).pushNamed(
+                        Routes.editprofile,
+                        arguments: {'name': profile['name']}),
+                  )
+                ],
               ),
             ),
             Column(

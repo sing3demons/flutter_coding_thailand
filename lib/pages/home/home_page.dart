@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_coding_thailand/redux/reducer/app_reducer.dart';
 import 'package:flutter_coding_thailand/view_models/menu_view_model.dart';
 import 'package:flutter_coding_thailand/widgets/menu.dart' as mainMenu;
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -29,19 +32,20 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             StoreConnector<AppState, Map<String, dynamic>>(
-                  distinct: false,
-                  converter: (store) => store.state.profileState.profile,
-                  builder: (context, data) => Expanded(
-                    child: Center(
-                      child: data == null
-                          ? Text('')
-                          : Text('Welcom : ${data['name']}',
-                              style: TextStyle(color: Colors.white)),
-                    ),
-                    flex: 1,
+              converter: (store) => store.state.profileState.profile,
+              builder: (context, profile) {
+                print('data : $profile');
+                return Expanded(
+                  child: Center(
+                    child: profile == null
+                        ? Text('Welcom ')
+                        : Text('Welcom : ${profile['name']}',
+                            style: TextStyle(color: Colors.white)),
                   ),
-                ) ??
-                Text(''),
+                  flex: 1,
+                );
+              },
+            ),
             Expanded(
               flex: 10,
               child: GridView.count(

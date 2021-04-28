@@ -3,6 +3,7 @@ import 'package:flutter_coding_thailand/pages/home/about_page.dart';
 import 'package:flutter_coding_thailand/pages/home/company_page.dart';
 import 'package:flutter_coding_thailand/pages/home/contact_page.dart';
 import 'package:flutter_coding_thailand/pages/home/covid_data.dart';
+import 'package:flutter_coding_thailand/pages/home/edit_profile_page.dart';
 import 'package:flutter_coding_thailand/pages/home/home_page.dart';
 import 'package:flutter_coding_thailand/pages/home/room_page_v2.dart';
 import 'package:flutter_coding_thailand/routes/routes.dart';
@@ -36,6 +37,9 @@ class _HomeStackState extends State<HomeStack> {
             break;
           case Routes.covid:
             builder = (BuildContext _) => CovidPage();
+            break;
+          case Routes.editprofile:
+            builder = (BuildContext _) => EditProfilePage();
             break;
           case Routes.room:
             builder = (BuildContext _) => RoomPageV2();
