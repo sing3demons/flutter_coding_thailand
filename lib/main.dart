@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_coding_thailand/pages/news/stack/news_stack.dart';
 import 'package:flutter_coding_thailand/pages/product/stack/product_stack.dart';
 import 'package:flutter_coding_thailand/pages/home/stack/home_stack.dart';
+import 'package:flutter_coding_thailand/pages/users/login_page.dart';
 import 'package:flutter_coding_thailand/redux/reducer/app_reducer.dart';
 import 'package:flutter_coding_thailand/routes/routes.dart';
-import 'package:flutter_coding_thailand/pages/users/stack/users_stack.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:redux/redux.dart';
@@ -28,16 +28,21 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreProvider<AppState>(
       store: store,
-      child: MaterialApp(
-        initialRoute: '/',
-        routes: {
-          Routes.root: (BuildContext context) => HomeStack(),
-          Routes.productstack: (context) => ProductStack(),
-          Routes.usersStack: (context) =>
-              token == null ? UsersStack() : HomeStack(),
-          Routes.newsstack: (context) => NewsStack(),
-        },
-      ),
+      child: StoreConnector<AppState, bool>(
+          converter: (store) => store.state.profileState.isLogin,
+          builder: (context, isLogin) {
+            return MaterialApp(
+              initialRoute: '/',
+              routes: {
+                Routes.root: (BuildContext context) =>
+                    isLogin != true ? LoginPage() : HomeStack(),
+                Routes.home: (context) => HomeStack(),
+                Routes.login: (context) => LoginPage(),
+                Routes.productstack: (context) => ProductStack(),
+                Routes.newsstack: (context) => NewsStack(),
+              },
+            );
+          }),
     );
   }
 }

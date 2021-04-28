@@ -6,6 +6,7 @@ import 'package:flutter_coding_thailand/pages/home/covid_data.dart';
 import 'package:flutter_coding_thailand/pages/home/edit_profile_page.dart';
 import 'package:flutter_coding_thailand/pages/home/home_page.dart';
 import 'package:flutter_coding_thailand/pages/home/room_page_v2.dart';
+import 'package:flutter_coding_thailand/pages/users/login_page.dart';
 import 'package:flutter_coding_thailand/routes/routes.dart';
 
 class HomeStack extends StatefulWidget {
@@ -28,6 +29,9 @@ class _HomeStackState extends State<HomeStack> {
             break;
           case Routes.about:
             builder = (BuildContext _) => AboutPage();
+            break;
+          case Routes.login:
+            builder = (BuildContext _) => LoginPage();
             break;
           case Routes.contact:
             builder = (BuildContext _) => ContactPage();

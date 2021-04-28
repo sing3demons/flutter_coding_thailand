@@ -10,5 +10,12 @@ class GetProfileAction {
 
 //action
 getProfileAction(Map profile) {
-  return GetProfileAction(ProfileState(profile: profile));
+  bool isLogin = false;
+  if (profile != null) isLogin = true;
+
+  return GetProfileAction(ProfileState(profile: profile, isLogin: isLogin));
+}
+
+logout(bool isLogin) {
+  return GetProfileAction(ProfileState(profile: null, isLogin: isLogin));
 }

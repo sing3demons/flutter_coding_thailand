@@ -38,7 +38,7 @@ class _LoginFormState extends State<LoginForm> {
 
       await _getProfile();
 
-      await _loading();
+      _loading();
 
       Future.delayed(Duration(seconds: 3), () async {
         await Navigator.of(context, rootNavigator: true)
@@ -57,11 +57,11 @@ class _LoginFormState extends State<LoginForm> {
         duration: Duration(seconds: 1),
         leftBarIndicatorColor: Colors.green,
       )..show(context);
-      //
     }
   }
 
   FocusNode myFocusNode;
+  FocusNode submitFocusNode;
 
   @override
   void initState() {
@@ -70,6 +70,7 @@ class _LoginFormState extends State<LoginForm> {
     _initPref();
     super.initState();
     myFocusNode = FocusNode();
+    submitFocusNode = FocusNode();
     _obscureText = true;
   }
 
@@ -102,6 +103,39 @@ class _LoginFormState extends State<LoginForm> {
       flushbarStyle: FlushbarStyle.GROUNDED,
       duration: Duration(seconds: 2))
     ..show(context);
+
+  _onLogin() {
+    String email = emailController.text;
+    String password = passwordController.text;
+    emailIsValid = EmailValidator.validate(email);
+
+    _errorEmail = null;
+
+    if (!email.isNotEmpty || !password.isNotEmpty || !emailIsValid) {
+      _errorEmail = 'The Email must be a valid email.';
+    }
+
+    if (_errorEmail == null) {
+      _formKey = {
+        'email': email,
+        'password': password,
+      };
+      _login(_formKey);
+    } else {
+      Flushbar(
+        title: "email or password is incorrect",
+        message: "Please try again",
+        icon: Icon(
+          Icons.error,
+          size: 28,
+          color: Colors.red,
+        ),
+        duration: Duration(seconds: 4),
+      )..show(context);
+
+      setState(() {});
+    }
+  }
 
   @override
   void dispose() {
@@ -149,38 +183,8 @@ class _LoginFormState extends State<LoginForm> {
           width: double.maxFinite,
           padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
           child: TextButton(
-            onPressed: () {
-              String email = emailController.text;
-              String password = passwordController.text;
-              emailIsValid = EmailValidator.validate(email);
-
-              _errorEmail = null;
-
-              if (!email.isNotEmpty || !password.isNotEmpty || !emailIsValid) {
-                _errorEmail = 'The Email must be a valid email.';
-              }
-
-              if (_errorEmail == null) {
-                _formKey = {
-                  'email': email,
-                  'password': password,
-                };
-                _login(_formKey);
-              } else {
-                Flushbar(
-                  title: "email or password is incorrect",
-                  message: "Please try again",
-                  icon: Icon(
-                    Icons.error,
-                    size: 28,
-                    color: Colors.red,
-                  ),
-                  duration: Duration(seconds: 4),
-                )..show(context);
-
-                setState(() {});
-              }
-            },
+            focusNode: submitFocusNode,
+            onPressed: _onLogin,
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(Colors.blue)),
             child: Text(
@@ -214,6 +218,7 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   TextField _passwordTextField() => TextField(
+        onSubmitted: (value) => FocusScope.of(context).requestFocus(_onLogin()),
         focusNode: myFocusNode,
         controller: passwordController,
         obscureText: _obscureText,
