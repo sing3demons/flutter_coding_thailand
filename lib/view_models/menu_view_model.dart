@@ -81,5 +81,15 @@ class MenuViewModel {
             await Navigator.pushNamed(context, Routes.about);
           },
         ),
+        Menu(
+          title: 'Customer',
+          icon: Icons.people_alt,
+          size: _sizeIcon,
+          color: _color,
+          iconColor: _colorIcon,
+          onTap: (context) async {
+            await Navigator.pushNamed(context, Routes.customer);
+          },
+        ),
       ];
 }

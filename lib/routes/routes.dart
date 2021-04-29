@@ -10,6 +10,8 @@ class Routes {
   static const login = 'homestack/login';
   static const regitster = 'homestack/register';
 
+  static const customer = '/customer';
+
   static const newsstack = '/newsstack';
   static const news = 'newsstack/news';
   static const webview = 'newsstack/webview';

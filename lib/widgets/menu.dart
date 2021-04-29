@@ -136,7 +136,7 @@ class _MenuState extends State<Menu> {
 
                     store.dispatch(logout(false));
 
-                    await Navigator.of(context).pop();
+                     Navigator.of(context).pop();
                     await Navigator.pushNamedAndRemoveUntil(
                         context, Routes.login, (route) => false);
                   },

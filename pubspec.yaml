@@ -39,6 +39,9 @@ dependencies:
   shared_preferences: ^2.0.5
   flutter_redux: ^0.8.2
   equatable: ^2.0.0
+  redux_thunk: ^0.4.0
+  sqflite: ^2.0.0+3
+  rflutter_alert: ^2.0.2
 
 dev_dependencies:
   flutter_test:

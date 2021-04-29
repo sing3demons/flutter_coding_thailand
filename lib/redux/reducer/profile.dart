@@ -1,8 +1,9 @@
 import 'package:flutter_coding_thailand/redux/acions/action.dart';
 import 'package:meta/meta.dart';
+import 'package:equatable/equatable.dart';
 
 @immutable
-class ProfileState {
+class ProfileState extends Equatable {
   final Map<String, dynamic> profile;
   bool isLogin = false;
   // ProfileState(
@@ -13,6 +14,9 @@ class ProfileState {
     return ProfileState(
         profile: profile ?? this.profile, isLogin: isLogin ?? this.isLogin);
   }
+
+  @override
+  List<Object> get props => [profile];
 }
 
 profileReducer(ProfileState state, dynamic action) {

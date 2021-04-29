@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_coding_thailand/pages/home/CustomerPage.dart';
 import 'package:flutter_coding_thailand/pages/home/about_page.dart';
 import 'package:flutter_coding_thailand/pages/home/company_page.dart';
 import 'package:flutter_coding_thailand/pages/home/contact_page.dart';
@@ -47,6 +48,9 @@ class _HomeStackState extends State<HomeStack> {
             break;
           case Routes.room:
             builder = (BuildContext _) => RoomPageV2();
+            break;
+          case Routes.customer:
+            builder = (BuildContext _) => CustomerPage();
             break;
 
           default:

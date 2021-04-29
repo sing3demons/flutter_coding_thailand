@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_coding_thailand/redux/reducer/app_reducer.dart';
-import 'package:flutter_coding_thailand/routes/routes.dart';
 import 'package:flutter_coding_thailand/view_models/menu_view_model.dart';
 import 'package:flutter_coding_thailand/widgets/menu.dart' as mainMenu;
 import 'package:flutter_redux/flutter_redux.dart';
@@ -33,6 +32,7 @@ class _HomePageState extends State<HomePage> {
               distinct: true,
               converter: (store) => store.state.profileState.profile,
               builder: (context, profile) {
+                print('test test test');
                 return Expanded(
                   child: Center(
                     child: Text('Welcom : ${profile['name']}',
